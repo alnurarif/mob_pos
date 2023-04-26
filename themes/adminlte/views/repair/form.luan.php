@@ -1,0 +1,1104 @@
+<style type="text/css">
+    .ui-autocomplete { z-index:2147483647; }
+    #footerRepair * {
+        text-align: left
+    }
+</style>
+<script type="text/javascript">
+
+lock = null;
+$(document).ready(function () {
+    lock = new PatternLock('#patternHolder',{
+        enableSetPattern : true,
+        onDraw:function(pattern){
+            $('#patternlock').val(pattern);
+        }
+    });
+});
+function setEditPattern(argument) {
+    lock.setPattern(argument);
+}
+
+
+function isEmptyObject(obj) {
+        if (obj == null) return true;
+        if (obj.length > 0)    return false;
+        if (obj.length === 0)  return true;
+        if (typeof obj !== "object") return true;
+        for (var key in obj) {
+            if (hasOwnProperty.call(obj, key)) return false;
+        }
+        return true;
+}
+   
+
+jQuery(document).on("click", "#modify_reparation", function () {
+    localStorage.removeItem('slitems');
+    loadRepairItems();
+    $('#rpair_form').find("input[type=text], textarea").val("");
+    $('#rpair_form').find("select").val("").trigger('change');
+    var num = $(this).data('num');
+    jQuery('#titReparation').html("<?= lang('edit'); ?> <?= lang('reparation_title'); ?>");
+    jQuery.ajax({
+        type: "POST",
+        url: base_url + "panel/repair/getRepairByID",
+        data: "id=" + encodeURI(num) + "&token=<?=$_SESSION['token'];?>",
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+
+            if (parseInt(data.pos_sold) == 1) {
+                toastr['error']("<?=lang('You cannot edit a completed repair');?>");
+                $('#repairmodal').modal('hide');
+                return;
+            }
+
+            select = document.getElementById('category_select');
+            var opt = document.createElement('option');
+            opt.value = data.category;
+            opt.innerHTML = data.category;
+            select.appendChild(opt);
+            jQuery('#client_name').val(parseInt(data.client_id)).trigger("change");
+            jQuery('#category_select').val((data.category)).trigger("change");
+            jQuery('#reparation_model').val(data.model_name);
+            jQuery('#defect').val(data.defect).trigger('change');
+            jQuery('#advance').val(data.advance);
+            jQuery('#date_ready').val(fsd(data.date_ready));
+
+            if (data.warranty !== 'false') {
+                jQuery('#warranty_id').val(JSON.parse(data.warranty).id).trigger('change');
+            }else{
+                jQuery('#warranty_id').val(0).trigger('change');
+
+            }
+
+
+            $('.edit_c').attr('data-num', data.client_id);
+            $('.edit_c').show();
+
+
+            if (data.deposit_collected == 1) {
+                document.getElementById('advance').readOnly = true;
+            }else{
+                document.getElementById('advance').readOnly = false;
+            }
+            jQuery('#service_charges').val(data.service_charges);
+            jQuery('#potax2').val(parseInt(data.tax_id)).trigger("change");
+            jQuery('#manufacturer').val(parseInt(data.manufacturer_id)).trigger("change");
+            jQuery('#assigned_to').val(parseInt(data.assigned_to)).trigger("change");
+            jQuery('#serial_number').val(data.serial_number);
+            jQuery('#comment').val(data.comment);
+            jQuery('#aesthetic_conditions').val(data.aesthetic_conditions);
+
+
+
+            <?php if($settings->use_defects_input_dropdown): ?>
+                $('#defect_id').append(new Option(data.defect, data.defect_id, false, true)).trigger('change');
+            <?php else: ?>
+                jQuery('#defect').val(data.defect).trigger('change');
+            <?php endif; ?>
+
+
+            <?php if($settings->use_models_input_dropdown): ?>
+                $('#model_id').append(new Option(data.model_name, data.model_id, false, true)).trigger('change');
+            <?php else: ?>
+                jQuery('#reparation_model').val(data.model_name);
+            <?php endif; ?>
+
+
+
+
+
+
+
+            if (parseInt(data.sms) === 1) { $('#sms').prop('checked', true); }
+            var ci = data.items;
+            var edit_item = true;
+            if (parseInt(data.status) === 2 || parseInt(data.status) === 0) {
+                var edit_item = false;
+            }
+            
+            if (!isEmptyObject(ci)) {
+                ritems = {};
+                localStorage.setItem('slitems', JSON.stringify(ci));
+                loadRepairItems(edit_item);
+                // $.each(ci, function() { add_product_item(this, edit_item); });
+            }else{
+                ritems = {};
+                $('#rprTable tbody').empty();
+                $('#rprTable tbody').html('<tr><td colspan="4">nothing to display</td></tr>');
+                loadRepairItems();
+            }
+
+            var IS_JSON = true;
+            try {
+                var json = $.parseJSON(data.custom_field);
+            } catch(err) {
+                IS_JSON = false;
+            }
+            if(IS_JSON) {
+                $.each(json, function(id_field, val_field) {
+                    jQuery('#custom_'+id_field).val(val_field);
+                });
+            }
+            // Custom Checkboxes
+            var IS_JSON = true;
+            try {
+                var json = $.parseJSON(data.custom_checkboxes);
+            } catch(err) {
+                IS_JSON = false;
+            }
+            if(IS_JSON) {
+                $.each(json, function(id_field, val_field) {
+                    if (parseInt(val_field) == 1) {
+                        $('#checkcustom_'+id_field).iCheck('check');
+                    }else{
+                        $('#checkcustom_'+id_field).iCheck('uncheck');
+                    }
+                });
+            }
+            $('#preprepair_hide').empty();
+            $('#prerepair_form')[0].reset();
+
+            // Custom Toggles
+            var IS_JSON = true;
+            try {
+                var json = $.parseJSON(data.custom_toggles);
+            } catch(err) {
+                IS_JSON = false;
+            }
+            if(IS_JSON) {
+                $.each(json, function(id_field, val_field) {
+                    if (parseInt(val_field) == 1) {
+                        document.getElementById('checktoggle_'+id_field).checked = true;
+                    }else{
+                        document.getElementById('checktoggle_'+id_field).checked = false;
+                    }
+                });
+            }
+
+            jQuery('input[name=cust_pin_code]').val(data.pin_code);
+            jQuery('input[name=patternlock]').val(data.pattern);
+            if (data.pattern && data.pattern !== '') {
+                setEditPattern(data.pattern);
+            }
+            $('#prerepair_form :input').not(':submit').clone().hide().appendTo('#preprepair_hide');
+
+
+
+            $('#footerRepair div:not(.skip)').remove();
+
+            footer = `
+            <div class="col-sm-3" style="padding-left: 0;">
+                <input id="code" name="code" type="text" class="validate form-control" placeholder="<?php echo lang('repair_code');?>">
+            </div>
+            <div class="col-sm-7" style="text-align: right;">
+                <button data-dismiss="modal" class="pull-left btn btn-default" type="button">
+                        <i class="fa fa-reply"></i> 
+                        <?= lang('go_back'); ?>
+                    </button>
+
+                <button id="upload_modal_btn" class="btn btn-default" data-mode="add"><i class="fa fa-cloud"></i> <?php echo lang('view_attached');?></button>
+
+                <button class="btn btn-primary" id="sign_repair" href="#signModal" data-toggle="modal" data-mode="update_sign" data-num="${num}"><i class="fas fa-signature"></i> <?php echo lang('sign_repair');?></button>
+
+                <button id="repair_submit" data-mode="modify" data-num="${encodeURI(num)}" form="rpair_form" class="btn btn-success"><i class="fas fa-save"></i>    <?php echo lang("save_reparation"); ?> <?php echo lang("repair_title"); ?>
+                </button>
+            </div>`;
+        
+            jQuery('#footerRepair').append(footer);
+            $('#code').val(data.code);
+
+            jQuery('#status_edit').val(data.status).trigger('change');
+            if (parseInt(data.sms) === 1) { $('#repair_sms').prop('checked', true); }
+            if (parseInt(data.email) === 1) { $('#repair_email').prop('checked', true); }
+        }
+    });
+});
+
+
+
+    jQuery(".add_repair").on("click", function (e) {
+
+        $('#preprepair_hide').empty();
+        $('#prerepair_form')[0].reset();
+
+        $("#reparation_manufacturer, #reparation_model, #service_charges").val("").trigger('change');
+        $('#rpair_form').find("input[type=text], textarea").val("").trigger('change');
+        $('#rpair_form').find("input[type=text], textarea").val("").trigger('change');
+
+        $('#rpair_form').find("select").val("").trigger('change');
+        $('#defect').val("");
+        $('#rpair_form').parsley().reset();
+
+        $("#potax2").val($("#potax2 option:first").val()).trigger('change');
+
+        ritems = {};
+        $('#rprTable tbody').empty();
+        $('#rprTable tbody').html('<tr><td colspan="4"><?= lang('nothing_to_display') ?></td></tr>');
+
+
+        localStorage.removeItem('slitems');
+        loadRepairItems();
+
+        
+        // Upload Manager Start
+        $('#attachment_data').val('');
+        $('#upload_manager').fileinput('destroy');
+        $("#upload_manager").fileinput({
+            uploadUrl: "<?php echo base_url();?>panel/repair/upload_attachments",
+            uploadAsync: false,
+            language: 'mylang',
+        }).on('filebatchuploadsuccess', function(event, data, previewId, index) {
+            response = data.response;
+            data = JSON.parse(response.data);
+            old_val = $('#attachment_data').val();
+
+            $('#attachment_data').val((old_val) + (old_val == '' ? '' : ',') +data.join(','))
+        });
+        // Upload Manager End
+
+        $('#repairmodal').modal({
+           // backdrop: 'static',
+           //  keyboard: false
+        });
+
+        jQuery('#titReparation').html("<?= lang('add'); ?> <?= lang('repair_title'); ?>");
+
+
+        $('#footerRepair div:not(.skip)').remove();
+
+
+        footer = `
+        <div class="col-sm-3" style="padding-left: 0;">
+            <input id="code" name="code" type="text" class="validate form-control" placeholder="<?php echo lang('repair_code');?>">
+        </div>
+        <div class="col-sm-7" style="text-align: right;">
+            <button data-dismiss="modal" class="pull-left btn btn-default" type="button">
+                    <i class="fa fa-reply"></i> 
+                    <?= lang('go_back'); ?>
+                </button>
+
+            <button id="upload_modal_btn" class="btn btn-default" data-mode="add"><i class="fa fa-cloud"></i> <?php echo lang('upload_file');?></button>
+
+            <button class="btn btn-primary" id="sign_repair" href="#signModal" data-toggle="modal" data-mode="add_signature"><i class="fas fa-signature"></i> <?php echo lang('sign_repair');?></button>
+
+            <button id="repair_submit" data-mode="add" form="rpair_form" class="btn btn-success"><i class="fas fa-plus-circle"></i>    <?php echo lang("add"); ?> <?php echo lang("repair_title"); ?>
+            </button>
+        </div>`;
+    
+        jQuery('#footerRepair').append(footer);
+
+        $.get( '<?=base_url();?>panel/misc/getReference/repair', function(data) {
+            $('#code').val(data.code);
+        });
+
+    });
+
+
+    jQuery(document).ready( function($) {
+        if (localStorage.getItem('slitems')) {
+            localStorage.removeItem('slitems');
+        }
+
+
+        $('.model_name_typeahead').typeahead(null, {
+            name: 'model',
+            display: 'name',
+            source: function(query, syncResults, asyncResults) {
+                $.get( '<?=base_url();?>panel/inventory/getModels/'+query+'?manufacturer='+encodeURI($('#reparation_manufacturer').val()), function(data) {
+                    asyncResults(data);
+                });
+            }
+        });
+
+        $('.parsley-form').parsley({
+            successClass: 'has-success',
+            errorClass: 'has-error',
+            classHandler: function(el) {
+                return el.$element.closest(".form-group");
+            },
+            errorsWrapper: '<span class="help-block"></span>',
+            errorTemplate: "<span></span>",
+            errorsContainer: function(el) {
+                return el.$element.closest('.form-group');
+            },
+        });
+
+        $( ".client_name" ).select2({
+            ajax: {
+                url: "<?php echo base_url(); ?>panel/customers/getAjax/no",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+        });
+    });
+
+
+</script>
+
+
+ <div class="modal modal-default-filled fade" id="repairmodal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-ku">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="titReparation"><?php echo lang('add_repair');?></h4>
+            </div>
+            <div class="modal-body">
+                <form id="rpair_form" class="parsley-form">
+                    <div id="preprepair_hide"></div>
+                    <input type="hidden" name="sign_id" id="repair_sign_id" value="">
+                    <input type="hidden" name="sign_name" id="repair_sign_name" value="">
+                    <input type="hidden" name="attachment_data" id="attachment_data" value>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <?php echo lang('client_title', 'client_name');?><font color="#FF0017"> *</font>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fas  fa-user"></i>
+                                        </div>
+
+                                        <select required="" id="client_name" name="client_name" data-num="1" class="form-control client_name" style="width: 100%">
+                                            <option></option>
+                                            <?php
+                                                foreach ($clients as $client) :
+                                                echo '<option value="'.$client->id.'">'.$client->first_name.' '.$client->last_name.' '.preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $client->telephone).'</option>';
+                                                endforeach;
+                                            ?>
+                                        </select>
+                                        <a class="add_c btn input-group-addon"><i class="fas fa-user-plus"></i></a>
+                                        <a  style="display: none;"  class="edit_c btn input-group-addon"  id="modify_client"><i class="fas fa-edit"></i></a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <?php echo lang('repair_category', 'category_select');?><font color="#FF0017"> *</font>
+                                    <div class="select_cat">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fas  fa-folder"></i>
+                                            </div>
+                                            <select <?php echo $frm_priv_repairs['category'] ? 'required' : ''; ?> id="category_select" name="category_select" data-num="1" class="form-control m-bot15" style="width: 100%">
+                                            <option></option>
+
+                                                <?php
+                                                $categories = explode(',', $settings->category);
+                                                foreach($categories as $line){
+                                                    echo '<option value="'.$line.'">'.$line.'</option>';
+                                                }
+                                                ?>
+                                                <option value="other">Other</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="input-group inp_cat">
+                                        <div class="input-group-addon">
+                                            <i class="fas  fa-folder"></i>
+                                        </div>
+                                        <input id="category_input" name="category_input" type="text" class="validate form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <?php echo lang('model_manufacturer', 'model_manufacturer');?>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fas  fa-folder"></i>
+                                            </div>
+                                             <select <?php echo $frm_priv_repairs['manufacturer'] ? 'required' : ''; ?> id="manufacturer" name="manufacturer" data-num="1" class="form-control m-bot15" style="width: 100%">
+                                            <option></option>
+                                                <?php
+                                                    foreach ($manufacturers as $manufacturer) :
+                                                    echo '<option value="'.$manufacturer->id.'">'.$manufacturer->name.'</option>';
+                                                    endforeach;
+                                                ?>
+                                            </select>
+                                                <a class="add_manufacturer btn input-group-addon"><i class="fas fa-plus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+
+                                <?php if(@$settings->use_models_input_dropdown):?>
+                                        <div class="form-group">
+                                            <?php echo lang('repair_model', 'model');?>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fas  fa-folder"></i>
+                                                </div>
+                                                <select <?php echo $frm_priv_repairs['model'] ? 'required' : ''; ?>  id="model_id" name="model_id" class="form-control m-bot15" style="width: 100%">
+                                                    <option value=""></option>
+                                                </select>
+                                                <a class="add_model btn input-group-addon"><i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                <?php else:?>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <?php echo lang('repair_model', 'model');?>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fas  fa-folder"></i>
+                                                </div>
+                                                <input class="form-control model_name_typeahead" id="reparation_model" name="model" <?php echo $frm_priv_repairs['model'] ? 'required' : ''; ?> style="width: 100%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                <?php endif?>
+                                
+                            </div>
+                            
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label><?php echo lang('Serial Number');?></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fas  fa-code"></i>
+                                        </div>
+                                        <input <?php echo $frm_priv_repairs['serial_number'] ? 'required' : ''; ?> id="serial_number" name="serial_number" class="validate form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                                
+                        </div>
+                        <div class="row">
+                            <?php if(@$settings->use_defects_input_dropdown):?>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <?php echo lang('repair_defect', 'defect');?>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fas  fa-link"></i>
+                                            </div>
+                                            <select <?php echo $frm_priv_repairs['defect'] ? 'required' : ''; ?>  id="defect_id" name="defect_id" class="form-control m-bot15" style="width: 100%">
+                                                <option value=""></option>
+                                                <?php
+                                                    foreach ($defects as $defect) :
+                                                    echo '<option value="'.$defect->id.'">'.$defect->name.'</option>';
+                                                    endforeach;
+                                                ?>
+                                            </select>
+                                            <a class="add_defect btn input-group-addon"><i class="fas fa-plus"></i></a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php else:?>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <?php echo lang('repair_defect', 'defect');?>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fas  fa-link"></i>
+                                                </div>
+                                                <input class="form-control" id="defect" name="defect" <?php echo $frm_priv_repairs['defect'] ? 'required' : ''; ?> style="width: 100%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif?>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label><?php echo lang('aesthetic_conditions');?></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fas  fa-code"></i>
+                                        </div>
+                                        <input id="aesthetic_conditions" name="aesthetic_conditions" class="validate form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <?php echo lang('defect_description', 'public_note'); ?>
+                                    <textarea class="form-control" id="public_note" name="public_note" rows="6"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label><?php echo lang('Assign Repair To');?></label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fas  fa-folder"></i>
+                                            </div>
+                                            <select <?php echo $frm_priv_repairs['assign_repair'] ? 'required' : ''; ?>  id="assigned_to" name="assigned_to" data-num="1" class="form-control m-bot15" style="width: 100%">
+                                                <option></option>
+                                                <?php
+                                                    foreach ($all_users as $user) :
+                                                    echo '<option value="'.$user->id.'">'.$user->first_name.' '.$user->last_name.'</option>';
+                                                    endforeach;
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            
+                            <div class="col-lg-6 input-field">
+                                <div class="form-group">
+                                    <label><?php echo lang('warranty_plans');?></label>
+                                    <?php $tr = array();
+                                    foreach ($warranty_plans as $plan) {
+                                        $tr[$plan['id']] = $plan['name'];
+                                    }
+                                    echo form_dropdown('warranty_id', $tr, '', 'class="form-control tip" id="warranty_id" style="width:100%;" required');
+                                    ?>
+                               </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label><?php echo lang('date_ready');?></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fas  fa-calendar"></i>
+                                        </div>
+                                        <input id="date_ready" name="date_ready" class="validate form-control date">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <?php echo lang('repair_sms', 'sms');?>
+                                    <div class="checkbox-styled">
+                                        <input type="hidden"  value="0" name="sms">
+                                        <input type="checkbox" class="skip" value="1" name="sms" id="sms">
+                                        <label for="sms"><?php echo sprintf(lang('repair_sms_info'), ($settings->usesms == 1) ? 'Nexmo' : 'Plivo');?></label>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="col-lg-6">
+                                
+                                <div class="form-group">
+                                    <?php echo lang('repair_email', 'email');?>
+                                    <div class="checkbox-styled">
+                                        <input type="hidden"  value="0" name="email">
+                                        
+                                        <input type="checkbox" class="skip" value="1" name="email" id="email">
+                                        <label for="email"><?php echo lang('repair_email');?></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <?php
+                                $custom = trim($settings->custom_fields);
+                                if ($custom !== '') {
+                                    $custom = explode(',', $custom);
+                                    foreach($custom as $line){ 
+                            ?>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label><?php echo $line; ?></label>
+                                        <input id="custom_<?php echo bin2hex($line); ?>" name="custom_<?php echo bin2hex($line); ?>" type="text" class="custom validate form-control">
+                                    </div>
+                                </div>
+                            <?php }}  ?>
+                        
+                             <?php
+                                $custom_checkmarks = trim($settings->repair_custom_checkbox);
+                                if ($custom_checkmarks !== ''):
+                                    $custom_checkmarks = explode(',', $custom_checkmarks);
+                                    foreach($custom_checkmarks as $line):
+                            ?>
+                                <div class="col-lg-3">
+
+                                    <div class="checkbox-styled">
+                                        <input name="checkcustom_<?php echo bin2hex($line); ?>" type="hidden" value="0">
+                                        <input type="checkbox" class="skip" value="1" name="checkcustom_<?php echo bin2hex($line); ?>" id="checkcustom_<?php echo bin2hex($line); ?>">
+                                        <label for="checkcustom_<?php echo bin2hex($line); ?>"><?php echo $line; ?></label>
+                                    </div>
+                                    
+                                </div>
+                            <?php endforeach; endif;?>
+                        </div>
+
+                        
+                    </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group combo">
+                                <?php echo lang("add_item", 'add_item'); ?>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fas  fa-link"></i>
+                                    </div>
+                                <?php echo form_input('add_item', '', 'class="form-control ttip" id="add_r_item" data-placement="top" data-trigger="focus" data-bv-notEmpty-message="' . ('please_add_items_below') . '" placeholder="' . lang("add_item") . '"'); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <?php echo lang('repair_advance', 'advance');?>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fas  fa-dollar-sign"></i>
+                                    </div>
+                                    <input id="advance" name="advance" type="text" value="0" class="validate form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <?=lang('taxrate_title', 'potax2');?>
+                                <select id="potax2" class="form-control input-tip select" name="tax_id" style="width: 100%;">
+                                    <?php foreach ($taxRates as  $tax): ?>
+                                        <option value="<?= $tax->id ?>"><?= $tax->name; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <?php if(!$settings->disable_labor): ?>
+                                <div class="form-group" data-toggle="tooltip" data-placement="top" title="<?php echo lang('If you are charging labor on this repair, enter it here. Labor is not taxed.');?>">
+                                    <?php echo lang('repair_service_charges', 'service_charges');?>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fas  fa-dollar-sign"></i>
+                                        </div>
+                                        <input id="service_charges" name="service_charges" type="text" value="0" class="validate form-control">
+                                    </div>
+                                </div>
+
+                            <?php else: ?>
+                                <input type="hidden" name="service_charges" value="0">
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    
+                    <div class="row">
+
+                        <div class="col-md-12">
+                                <div class="control-group table-group">
+                                    <label class="table-label" for="combo"><?php echo lang("defective_items"); ?></label>
+
+                                    <div class="controls table-controls">
+                                        <table id="rprTable"
+                                               class="table ritems table-striped table-bordered table-condensed table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th class="col-md-5"><?php echo lang("product_name") . " (" . lang("product_code") . ")"; ?></th>
+                                                <th class="col-md-3"><?php echo lang("unit_price"); ?></th>
+                                                <th class="col-md-3"><?php echo lang('Discount');?></th>
+                                                <th class="col-md-3"><?php echo lang('Tax');?></th>
+                                                <th class="col-md-3"><?php echo lang('Total');?></th>
+                                                <th class="col-md-1 text-center">
+                                                    <i class="fas fa-trash" style="opacity:0.5; filter:alpha(opacity=50);"></i>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <td colspan="5"><?php echo lang('table_empty');?></td>
+                                            </tbody>
+
+                                        </table>
+                                        <table class="table ritems table-striped table-bordered table-condensed table-hover">
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="1" class="warning"><span class="pull-right"><?php echo lang('subtotal')?></span></th>
+                                                    <th colspan="1" class="info"><span id="price_span">0.00</span></th>
+
+                                                    <th colspan="1" class="warning"><span class="pull-right"><?php echo lang('Total Tax');?></span></th>
+                                                    <th colspan="1" class="success"><span id="tax_spane">0.00</span></th>
+
+                                                </tr>
+                                                <tr id="labor_tr">
+                                                    <th colspan="1" class="warning"><span class="pull-right"><?php echo lang('labor_cost_summay')?></span></th>
+                                                    <th colspan="1" class="success"><span id="sc_span">0.00</span></th>
+                                                    <th colspan="1" class="warning"><span class="pull-right"><?php echo lang('labor_cost_summay')?> + <?php echo lang('total'); ?></span></th>
+                                                    <th colspan="1" class="success"><span id="totalprice_span">0.00</span></th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="3" class="warning"><span class="pull-right"><?php echo lang('grand_total'); ?></span></th>
+                                                    <th class="success"><span id="gtotal">0.00</span></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- comment here -->
+                                 <div class="form-group">
+                            <?php echo lang('repair_comment', 'comment'); ?>&nbsp;(<?php echo lang('please_note_defects'); ?>)
+                            <textarea class="form-control" id="comment" name="comment" rows="6"></textarea>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button href="#prerepair" class="prerepair_show btn btn-primary">
+                            <i class="fas fa-plus-circle"></i> <?php echo lang('Pre Repair Checklist');?>
+                        </button>
+                        <hr>
+                       
+                    </div>
+                </div>
+
+               
+                </form>
+            </div>
+            <div class="modal-footer" id="footerRepair">
+                <div class="col-sm-2 skip"> 
+                    <select style="width: 100%;" id="status_edit" class="form-control">
+                        <?php foreach ($statuses as $status): ?>
+                            <option value="<?php echo $status->id; ?>"><?php echo escapeStr($status->label); ?></option>
+                        <?php endforeach; ?>
+                        <option value="0"><?php echo lang('cancelled'); ?></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+      
+
+ <div class="modal modal-default-filled fade" id="prerepair" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="exit_prepair" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo lang('Pre Repair Checklist');?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="row">
+                        <form id="prerepair_form">
+                        <div class="col-md-6">
+                            <?php
+                                $repair_custom_toggles = trim($settings->repair_custom_toggles);
+                                if ($repair_custom_toggles !== ''):
+                                    $repair_custom_toggles = explode(',', $repair_custom_toggles);
+                                    foreach($repair_custom_toggles as $line):
+                            ?>
+                                    <div class="col-lg-6">
+                                        <div class="checkbox-toggle-styled-on-off">
+                                            <input name="checktoggle_<?php echo bin2hex($line); ?>" type="hidden" value="0">
+                                            <input name="checktoggle_<?php echo bin2hex($line); ?>" id="checktoggle_<?php echo bin2hex($line); ?>" value="1" type="checkbox">
+                                            <label for="checktoggle_<?php echo bin2hex($line); ?>"><?php echo $line; ?></label>
+                                        </div>
+                                    </div>
+                            <?php endforeach; endif;?>
+                        </div>
+                        <div class="col-md-6">
+
+
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class=""><a href="#one-tab-default" data-toggle="tab" aria-expanded="false"><?php echo lang('Pin Code');?></a></li>
+                                    <li class="active"><a href="#two-tab-default" data-toggle="tab" aria-expanded="true"><?php echo lang('Pattern');?></a></li>
+                                </ul>
+                                
+                                <div class="tab-content">
+                                    <div class="tab-pane" id="one-tab-default">
+                                        <div class="form-group">
+                                            <label><?php echo lang('Pin Code');?></label>
+                                            <input type="text" name="cust_pin_code" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane active" id="two-tab-default">
+                                        <div id="patternHolder"></div>
+                                        <input type="hidden" name="patternlock" id="patternlock">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="modal-footer">
+                <button class="btn btn-submit btn-primary" id="submit_prerepairs"><?php echo lang('Submit');?></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function calculate_price() {
+        var rows = $('#rprTable').children('tbody').children('tr');
+        
+        var pp = 0;
+        var pt = 0;
+        $.each(rows, function () {
+            pp += formatDecimal(parseFloat($(this).find('.rprice').val()));
+            pt += formatDecimal(parseFloat($(this).find('.rtax').val()));
+        });
+
+
+        sc_tax = 0;
+        var service_charges = $('#service_charges').val() ? parseFloat($('#service_charges').val()) : 0;
+        potax2 = $('#potax2').val();
+        $.each(tax_rates, function () {
+            if (this.id == potax2) {
+                if (this.type == 2) {
+                    sc_tax = parseFloat(this.rate);
+                }
+                if (this.type == 1) {
+                    sc_tax = parseFloat((((service_charges) * this.rate) / 100), 4);
+                }
+            }
+        });
+
+
+        $('#price_span').html(formatDecimal((parseFloat(pp)), 2));
+        $('#totalprice_span').html(formatDecimal(parseFloat(pp) + parseFloat(service_charges), 2));
+        total = parseFloat($('#totalprice_span').html());
+
+        $('#sc_span').html(formatDecimal(service_charges));
+        $('#gtotal').html(formatDecimal(parseFloat(total)+parseFloat(pt) + parseFloat(sc_tax)));
+
+        var deposit = parseFloat($('#advance').val());
+        $('#deposit_span').html(formatDecimal(deposit));
+        $('#balance_span').html(formatDecimal(parseFloat(total) - parseFloat(deposit)));
+        return true;
+    }
+
+    $('#potax2').on('change', function() {
+        calculate_price()
+    });
+
+</script>
+<?= $this->load->view($theme . 'repair/js');?>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#manufacturer').on('change', function (e) {
+            $('#model_id').val('').trigger('change');
+
+            $("#model_id").select2({
+                ajax: {
+                    placeholder: "<?php echo lang('Please Select');?>",
+                    url: "<?php echo base_url(); ?>panel/settings/models/getAjax",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            manufacturer: $('#manufacturer').val(),
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                },
+            });
+        });
+
+
+        jQuery("#submit_prerepairs").on("click", function (e) {
+            e.preventDefault();
+            $('#preprepair_hide').empty();
+            $('#prerepair_form :input').not(':submit').clone().hide().appendTo('#preprepair_hide');
+            $('#prerepair').modal('hide');
+
+        });
+        jQuery("#exit_prepair").on("click", function (e) {
+            e.preventDefault();
+            $('#preprepair_hide').empty();
+            $('#prerepair_form :input').not(':submit').clone().hide().appendTo('#preprepair_hide');
+            $('#prerepair').modal('hide');
+        });
+   
+        ritems = {};
+        window.onbeforeunload = function() {
+            $.post( "<?php echo base_url();?>panel/inventory/removeSelected" );
+        }
+        
+        // Speed up calls to hasOwnProperty
+        var hasOwnProperty = Object.prototype.hasOwnProperty;
+           
+        if (localStorage.getItem('slitems')) {
+            loadRepairItems();
+        }
+        if (!($('#service_charges').val())) {
+            $('#labor_tr').hide();
+        }
+       
+        var total = null;
+
+
+        $(document).on('change', '#service_charges, #advance', function () {
+            calculate_price();
+        });
+         $(document).on('keyup', '#service_charges, #advance', function () {
+            calculate_price();
+        });
+   
+        $('#repairmodal').on('hidden.bs.modal', function () {
+            $.post( "<?php echo base_url();?>panel/inventory/removeSelected" );
+            localStorage.clear();
+            ritems = {};
+        })
+        
+        $('#rpair_form select').select2({placeholder: "<?php echo lang('select_placeholder');?>"});
+
+        $('#rpair_form').on( "submit", function(event) {
+            event.preventDefault();
+            form = $(this);
+            var mode = jQuery('#repair_submit').data("mode");
+            var id = jQuery('#repair_submit').data("num");
+            var code = jQuery('#code').val();
+            var status_code = jQuery('#status_edit').val();
+
+            if (mode == 'add') {
+
+                if (parseInt(status_code) == 2 || parseInt(status_code) == 0) {
+                    if (localStorage.getItem('to_order')) {
+                        var order_items = localStorage.getItem('to_order');
+                        if (order_items) {
+                            bootbox.alert("<?php echo lang('Cannot Submit because some of the ritems are not in stock');?>")
+                            return false;
+                            exit();
+                        }
+                    }
+                }
+            }
+            
+            //validate
+            var valid = form.parsley().validate();
+            if (valid) {
+                if (mode == 'add') {
+                    var url = base_url + "panel/repair/add";
+                    var dataString = $('#rpair_form').serialize() +'&'+ $('#prerepair_form').serialize() + '&code=' + code + '&status=' + status_code;
+                    // newWindow = window.open("", "_blank");
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: dataString,
+                        cache: false,
+                        success: function (data) {
+                            result = (JSON.parse(data));
+                            // newWindow.location = base_url + "panel/repair/invoice/" + encodeURI(result.id) + "/0";
+                            
+                            setTimeout(function () {
+                                if (result.error) {
+                                    toastr['error']("Code", result.error);
+                                }else{
+                                    toastr['success']("<?php echo lang('add'); ?>", "<?php echo lang('repair_title'); ?> " + name + " " + " <?php echo lang('added'); ?>");
+                                    $('#repairmodal').modal('hide');
+                                }
+                            }, 500);
+                        }
+                    });
+                }else{
+                    var dataString = $('#rpair_form').serialize() +'&'+ $('#prerepair_form').serialize() + '&code=' + code + '&status=' + status_code;
+                    $.ajax({
+                        type: "POST",
+                        url: base_url + "panel/repair/edit/"+id,
+                        data: dataString,
+                        cache: false,
+                        success: function (data) {
+
+                            if (data.error) {
+                                toastr['error']("Code", data.error);
+                            }else{ 
+                                toastr['success']("<?php echo lang('edit'); ?>", "<?php echo lang('repair_title'); ?>: " + name + " " + "<?php echo lang('edited'); ?>");
+                                $('#repairmodal').modal('hide');
+                            }
+                            // setTimeout(function () {
+                            // }, 500);
+                        }
+                    });
+                }
+            }
+            return false;
+        });
+        jQuery('.inp_cat').hide();
+
+        jQuery("#category_select").on("select2:select", function (e) {
+            var selected = jQuery("#category_select").val();
+            if(selected === 'other') {
+                jQuery('.select_cat').hide();
+                jQuery('.inp_cat').show();
+                jQuery('#category_input').val('');
+                jQuery('#category_input').focus();
+                <?php if($frm_priv_repairs['category']): ?>
+                    jQuery('#category_input').attr('required', true);
+                <?php endif;?>
+            }
+            else
+            {
+                jQuery('#category_select').val(selected);
+            }
+        });
+
+
+        jQuery("#defect_id").on("select2:select", function (e) {
+            $.get( '<?=base_url();?>panel/misc/getDefectDescription/'+$(this).val(), function(data) {
+                $('#public_note').val(data.description);
+            });
+        });
+
+        jQuery(document).on("click", ".prerepair_show", function(event) {
+            event.preventDefault();
+            $('#preprepair_hide').empty();
+            $('#prerepair').modal({
+                backdrop: 'static',
+                keyboard: false
+            }).appendTo('body');
+        });
+
+        $('#client_name').on("select2:select", function(e) {
+            item_id = $(this).val();
+            $('.edit_c').attr('data-num', item_id);
+            $('.edit_c').show();
+        });    
+    });
+
+</script>

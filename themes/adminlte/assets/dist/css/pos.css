@@ -1,0 +1,48 @@
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 0px 8px;
+}
+.font16 { font-size: 16px; font-weight: bold; }
+.btn-pr {
+    border: 1px solid #eee;
+    cursor: pointer;
+    height: 60px;
+    margin: 0 0 3px 2px;
+    padding: 2px;
+    min-width: 100px;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.btn-pr span {
+    display: table-cell;
+    height: 45px;
+    line-height: 15px;
+    vertical-align: middle;
+    text-transform: uppercase;
+    /*width: 10.5%;*/
+    min-width: 94px;
+    overflow: hidden;
+}
+
+.btn-pr.active { background: #eee; border: 1px solid #e5e5e5; cursor: default;  }
+    
+#posTable thead, #posTable tbody { display: block; }
+#totalTable tbody tr{
+    width: 100%;
+    display: inline-table;
+}
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+#left-middle {
+  background-color: white;
+}

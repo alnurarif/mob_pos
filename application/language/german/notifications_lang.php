@@ -1,0 +1,17 @@
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+$lang['notification'] = "Benachrichtigungen";
+$lang['add_notification'] = "Benachrichtigungen hinzufügen";
+$lang['edit_notification'] = "Benachrichtigungen bearbeiten";
+$lang['delete_notification'] = "Benachrichtigungen löschen";
+$lang['delete_notifications'] = "Benachrichtigungen löschen";
+$lang['notification_added'] = "Benachrichtigungen erfolgreich hinzugefügt";
+$lang['notification_updated'] = "Benachrichtigungen erfolgreich aktualisiert";
+$lang['notification_deleted'] = "Benachrichtigungen erfolgreich gelöscht";
+$lang['notifications_deleted'] = "Benachrichtigungen erfolgreich gelöscht";
+$lang['submitted_at'] = "Eingereicht am";
+$lang['till'] = "Bis";
+$lang['comment'] = "Kommentar";
+$lang['for_customers_only'] = "Nur für Kunden";
+$lang['for_staff_only'] = "Nur für Mitarbeiter";
+$lang['for_both'] = "Für beide";
+$lang['till'] = "Bis";

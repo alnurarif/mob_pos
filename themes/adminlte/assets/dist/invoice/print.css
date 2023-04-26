@@ -1,0 +1,32 @@
+#invoice.new {
+  float: left;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.invoice-logo, 
+.invoice-to .to-phone, 
+.invoice-to a.to-email, 
+.invoice-meta .invoice-number, 
+.invoice-meta .invoice-date,
+.invoice-meta .invoice-due, 
+.info .info-time,
+.info .info-payment, 
+.info .info-terms,
+.invoice-paynow, 
+#footer .footer-mail,
+#footer .footer-phone, 
+#footer .footer-web, 
+#footer, 
+.invoice-totals tbody td.col-2, 
+.invoice-totals tbody th.col-1,
+.invoice-totals thead th, 
+.invoice-items thead th {
+	visibility:visible;
+	-webkit-print-color-adjust: exact;
+}
+#footer .footer-phone {
+	margin-left:30px;}
+.invoice-paynow {
+  display: none;
+}

@@ -1,0 +1,182 @@
+<!doctype html>
+<html dir="ltr" lang="en" class="no-js">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+
+	<title>sprSimple Invoice</title>
+
+	<link rel="stylesheet" href="reset.css" media="all" />
+	<link rel="stylesheet" href="style.css" media="all" />
+	<link rel="stylesheet" href="print.css" media="print" />
+
+	<!-- give life to HTML5 objects in IE -->
+	<!--[if lte IE 8]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+	<!-- js HTML class -->
+	<script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
+</head>
+<body>
+<!-- begin markup -->
+
+
+
+<div id="invoice" class="new"><!-- INVOICE -->
+
+	<header id="header"><!-- HEADER -->
+		<div class="invoice-logo"></div><!-- LOGO -->
+       
+        <div class="invoice-from"><!-- HEADER FROM -->
+			<div class="org">Agnisqu, Obistium iniat 34, 7895 Ficienihit</div>
+            <div class="org">Phone: 97 567 87 87 55   Fax: 97 567 87 87 57</div>
+				<a class="email" href="mailto:office@yourbusiness.com">E-mail: office@yourbusiness.com</a>
+		</div><!-- HEADER FROM -->
+
+	</header><!-- HEADER -->
+	<!-- e: invoice header -->
+  
+    <div class="this-is-line">
+    	<div class="this-is">INVOICE</div><!-- DOC TITLE -->
+	</div>
+
+	<section id="info-to"><!-- TO SECTION -->
+
+		<div class="invoice-to-title">INVOICE TO</div><!-- INVOICE TO -->
+        <div class="invoice-to">
+			<div class="to-org">Agnisqu, Obistium iniat 34, 7895 Ficienihit</div>
+            <div class="to-phone">97 567 87 87 55</div>
+			<a class="to-email" href="mailto:office@yourbusiness.com">
+                office@yourbusiness.com</a>
+		</div><!-- INVOICE TO -->
+
+		<div class="invoice-meta">
+			<div class="meta-uno invoice-number">Invoice No:</div>
+			<div class="meta-duo">000459</div>
+			<div class="meta-uno invoice-date">Invoice Date:</div>
+			<div class="meta-duo">25th December 2014</div>
+			<div class="meta-uno invoice-due">Total Due:</div>
+			<div class="meta-duo">$ 57894</div>
+		</div>
+
+	</section><!-- TO SECTION -->
+
+	<section class="invoice-financials"><!-- FINANCIALS SECTION -->
+
+		<div class="invoice-items"><!-- INVOICE ITEMS -->
+			<table>
+				<thead>
+					<tr>
+						<th class="col-1">Item &amp; Description</th>
+						<th class="col-2">Quantity</th>
+						<th class="col-3">Unit Price</th>
+                        <th class="col-4">Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>
+                        	<h1>Item Description</h1>
+                            <p class="description">Acipsani endelite doluptione non plant faceriaecus ulparum atis natur, voluptur, cor sunt quia di aut.</p>
+                        </th>
+						<td>2</td>
+						<td>$ 750.00</td>
+                        <td>$ 1,500.00</td>
+					</tr>
+					<tr>
+						<th>
+                        	<h1>Item Description</h1>
+                            <p class="description">Acipsani endelite doluptione non plant faceriaecus ulparum atis natur, voluptur, cor sunt quia di aut.</p>
+                        </th>
+						<td>1</td>
+						<td>$ 300.00</td>
+                        <td>$ 300.00</td>
+					</tr>
+					<tr>
+						<th>
+                        	<h1>Item Description</h1>
+                            <p class="description">Acipsani endelite doluptione non plant faceriaecus ulparum atis natur, voluptur, cor sunt quia di aut.</p>
+                        </th>
+						<td>3</td>
+						<td>$ 299.00</td>
+                        <td>$ 897.00</td>
+					</tr>
+					<tr>
+						<th>
+                        	<h1>Item Description</h1>
+                            <p class="description">Acipsani endelite doluptione non plant faceriaecus ulparum atis natur, voluptur, cor sunt quia di aut.</p>
+                        </th>
+						<td>1</td>
+						<td>$ 780.00</td>
+                        <td>$ 780.00</td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div><!-- INVOICE ITEMS -->
+        
+		<div class="lower-block"><!-- TERMS&PAYMENT INFO -->
+        
+            <div class="info">
+                <div class="info-time"><strong>Pay by:</strong> Credit Card</div>
+                <div class="info-payment"><strong>Terms</strong><br>
+    Sime omnimag natibus es nis eum re prepuditest, tem que numqui doluptas sinvel mod eos rem fuga. Ribus es ailiqui il maiori sit unti sit et lam quam volum</div>
+                <div class="info-terms"><strong>Terms & Conditions</strong><br>
+    Sime omnimag natibus es nis eum re prepuditest, tem que numqui doluptas sinvel mod eos rem fuga. Ribus es ailiqui il maiori sit unti sit et lam quam volum
+                </div>
+            </div>
+
+            <div class="invoice-totals"><!-- TOTALS -->
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Subtotal</th>						
+                            <td>$ 3,477.00</td>
+                        </tr>
+                        <tr>
+                            <th>Tax VAT 7%</th>						
+                            <td>$ 243.39</td>
+                        </tr>
+                        <tr>
+                            <th>Discount 0%</th>						
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <th class="col-1">Total Due:</th>						
+                            <td class="col-2">$ 1,500.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <!--<div class="invoice-pay">
+                    <h5>Pay with...</h5>
+                    <ul>
+                        <li>
+                            <a href="#" class="gcheckout">Checkout with Google</a>
+                        </li>
+                        <li>
+                            <a href="#" class="acheckout">Checkout with Amazon</a>
+                        </li>
+                    </ul>
+                </div>-->
+            </div><!-- TOTALS -->
+            <!--
+            <div class="invoice-signature"><strong>John Doe</strong><br>
+                Project Director    
+            </div>
+            <div class="invoice-paynow"><a href="#">Pay Now</a></div>
+-->
+		</div><!-- TERMS&PAYMENT INFO -->
+        
+	</section><!-- FINANCIALS SECTION -->
+
+	<footer id="footer"><!-- FOOTER -->
+		<div class="footer-mail">stevenson@yourcompany.com</div>
+        <div class="footer-phone">+75 754 234 908</div>
+        <div class="footer-web">www.yourcompany.com</div>
+	</footer><!-- FOOTER -->
+
+</div><!-- INVOICE -->
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+// POS Lang
+$lang['sales_person']                   	= "Vendeur";
+$lang['sale_no_ref']                    	= "ID Vente";
+$lang['customer']               			= "Client";
+$lang['paid_by']                        	= "Payé par";
+$lang['amount']                         	= "Montant";
+$lang['change']                         	= "Change";
+$lang['cash']                               = "Espèces";
+$lang['no']                                 = "Non";
+$lang['yes']                                = "Oui";
+$lang['CC']                                 = "Carte bancaire";
+$lang['cheque']                             = "Chèque";
+$lang['cc_no']                              = "Numéro Carte de crédit";
+$lang['cc_holder']                          = "Nom du porteur";
+$lang['card_type']                          = "Type de carte";
+$lang['Visa']                               = "Visa";
+$lang['MasterCard']                         = "MasterCard";
+$lang['Amex']                               = "Amex";
+$lang['Discover']                           = "Discover";
+$lang['month']                              = "Mois";
+$lang['year']                               = "Année";
+$lang['cvv2']                               = "CVV2";
+$lang['cheque_no']                          = "Numéro de Chèque";
+$lang['Visa']                               = "Visa";
+$lang['MasterCard']                         = "MasterCard";
+$lang['Amex']                               = "Amex";
+$lang['from']                               = "De";
+$lang['to']                               	= "à";
+$lang['sales']								= "Ventes";
+
+
+
+// Drawer Report - Export Langs
+$lang['cc_slips']                   = "CC Slips";
+$lang['total_cash']                 = "Total Cash";
+$lang['open_time']                  = "Temps Ouvert";
+$lang['close_time']                 = "Temps Fermé";
+$lang['opened_by']                 = "Ouvert par";
+$lang['closed_by']                 = "Fermé par";
+$lang['cash_in_hand']               = "Cash in hand";
+$lang['cheques']                    = "Chèques";
+$lang['count_note']                    = "Count Note";
+$lang['cc_slips_submitted']                    = "CC Slips Submitted";
+$lang['cheques_submitted']                    = "Chèques Soumis";
+$lang['total_cash_submitted']                    = "Total Cash Submitted";
+$lang['drawer_report']                    = "Données Caisse PDV";
+
+
+$lang['no_record_found']                 = "Aucun enregistrement trouvé";
+$lang['drawer_report_Date']                 = "Rapport de caisse de %s à %s";
+$lang['sale_details']                 = "Détails des ventes";
+$lang['view_sale']                 = "Voir la vente";
+$lang['date_range']                 = "Plage de dates";
+$lang['sale_id']                 = "ID Vente";
+$lang['close_cash']                 = "Argent à Fermeture";
+$lang['#']                 = "#";
+$lang['back_to_pos']                 = "Retour au PDV";
+$lang['opening_Cash']                 = "Argent à l\'Ouverture";
+$lang['cash_sales'] = "Ventes espèces";
+$lang['check_sales'] = "Ventes chèques";
+$lang['cc_sales'] = "Ventes carte de crédit";
+$lang['pppsales'] = "Ventes Paypal";
+$lang['othersales'] = "Autres ventes";
+$lang['totalsales'] = "Total des venets";
+$lang['cash_count_sheet'] = "Feuille de décompte";
+$lang['open_register'] = "Ouvrir tiroir caisse";
+$lang['total_value_cash'] = "Valeur totale Espèces";
+$lang['total_value_check'] = "valeur totale Chèques";
+$lang['total_value_ccc'] = "Valeur totale Carte de crédit";
+$lang['register_closing_report'] = "Rapport de fermeture du registre";
+$lang['register_closing_report_span'] = "Ouvert le %s à %s ||| Fermé le %s à %s";
+$lang['select_pos_Client'] = "Veuillez sélectionner ou créer un client";
+$lang['walk_in'] = "Client Non-Identifié";
+$lang['max_allowed_limit_reached'] = "Limite maximum autorisée attente";
+$lang['stock_error'] = "Vous avez seulement";
+$lang['pos_not_in_stock'] = "Vous n'avez pas ce produit en stock";
+$lang['paid_error'] = 'Oups. On dirait qu\'il manque encore de l\'argent. Veuillez collecter le solde restant du client.';
+$lang['add_product_before_checkout'] = 'Veuillez ajouter un article avant le paiement. Merci!';
+$lang['checkout_negative'] = 'Le montant de la vente ne peut être négatif.';
+$lang['sale_note'] = 'Note de la vente';
+$lang['tpayments'] = 'Total de Paiements';
+$lang['add_more_payments'] = 'Ajouter davantage de Paiements';
+$lang['check_number'] = 'Numéro de Chèque';
+$lang['payment_note'] = 'Note de paiement';
+$lang['paying_by'] = 'Paiement par';
+$lang['select_payment_method'] = 'Veuillez sélectionner une méthode de paiement';
+$lang['ppp'] = 'PayPal';
+$lang['other'] = 'Autre';
+$lang['finalize_sale'] = 'Finaliser la vente';
+$lang['payment'] = 'Paiement';
+$lang['clear_sale'] = 'Supprimer la vente';
+$lang['product'] = 'Produit';
+$lang['qty'] = 'Quantité';
+$lang['register_closed'] = 'Registre fermé avec succès';
+$lang['register_opened'] = 'Registre ouvert avec succès';
+$lang['register_open'] = 'Registre ouvert';
+$lang['register_not_open'] = 'Registre non ouvert';
+$lang['register_details'] = 'Détails Caisse';
+$lang['close_register'] = 'Fermer la Caisse';
+$lang['update_settings']                = "Mettre à jour les paramètres";
+$lang['products_per_page']                      = "Afficher les produits";
+$lang['pos_config']                     = "Configuration PDV";
+$lang['pos_setting_updated']            = "Paramètres PDV mis a jours avec succès";
+$lang['product_button_color']           = "Couleur du bas des produits";
+$lang['default']                        = "Défaut";
+$lang['primary']                        = "Prioritaire";
+$lang['info']                           = "Info";
+$lang['warning']                        = "Attention";
+$lang['danger']                         = "Danger";
+
+$lang['search_product_by_name_code']    = "Rechercher produit par nom/code";
+$lang['au_pr_name_tip']                     = "Veuillez commencer à rentrer le nom/code pour voir les suggestions, ou scannez le code barre";
+$lang['select_customer']                       = "Veuillez sélectionner d\'abord un client";
+
+$lang['PRODUCT OPTIONS']    = "OPTIONS PRODUIT";

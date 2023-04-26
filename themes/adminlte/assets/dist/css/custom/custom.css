@@ -1,0 +1,629 @@
+.modal-body .flatb {
+    width: 100%;
+    display: block;
+    color: white;
+    line-height: 90px;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+.modal-body .flatb {
+    background-color: #0d6c94;
+}
+.modal-ku {
+    width: calc(90% - 30px);
+}
+
+/* =============== MODAL VISUALIZZA =============== */
+
+.bio-row p {
+    border: 1px solid rgb(238, 238, 238);
+    margin-right: -1px;
+}
+
+.bio-row p span {
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+.bio-row p span.bold {
+    padding: 10px 15px;
+
+    background-color: rgb(245, 245, 245);
+    width: 185px;
+    color: rgb(71, 71, 71);
+}
+
+.bio-row p span.bold small {
+    display: none;
+}
+
+.bio-row p span.bold i {
+    color: black;
+    margin: -10px 10px -10px -15px;
+    background-color: rgb(252, 252, 252);
+    line-height: 41px;
+    width: 40px;
+    text-align: center;
+}
+
+
+.modal-body .flatb {
+    width: 100%;
+    display: block;
+    color: white;
+    line-height: 90px;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+.modal-body .flatb i {
+    font-size: 40px;
+    position: relative;
+    top: 8px;
+    right: 10px;
+    line-height: 60px;
+    width: 60px;
+    background-color: rgba(0, 0, 0, 0.13);
+}
+
+.modal-body .flatb:hover i {
+    background-color: rgba(255, 255, 255, 0.13);
+}
+
+.select2-container.select2-container--default .select2-results__option[aria-selected=true] {
+    color: white;
+}
+
+.modal-content{
+        border-radius: 10px;
+}
+/*
+.panel, .box {
+    border-radius: 10px;
+    padding: 25px;
+}*/
+/* Media queries used on blog.staydecent.ca by Adrian Unger 
+   check my full source at:
+   http://blog.staydecent.ca/static/css/style-0.1.6.css */
+@media only screen and (min-width:768px) and (max-width:1269px) {
+    .panel, .box {
+        border-radius: 10px;
+        padding: 15px;
+    }
+}
+@media only screen and (min-width:768px) and (max-width:959px) {
+    /* Here is where I adjust for Ipad's and similar screen
+       widths. Note that the above query and this one overlap
+       meaning any rules above will also apply. */
+   .panel, .box {
+        border-radius: 10px;
+        padding: 25px;
+    }
+}
+@media only screen and (min-width:0px) and (max-width:767px) {
+   /* As soon as we fall below the Ipad's width I use my 'mobile'
+      design. So, everything in this query is meant for 
+      smartphones and other small screens. */
+    .panel, .box {
+        border-radius: 10px;
+        padding: 25px;
+    }
+}
+
+/* A popular grid size used is 960px. Skeleton, a new Boilerplate
+   for Responsive, mobile-friendly development, is based on that.
+   http://www.getskeleton.com/src/stylesheets/skeleton.css */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    /* Here, Skeleton sets the rules for anything less than 960px
+       and at least the size of the Ipad screen. */
+    .panel, .box {
+        border-radius: 10px;
+        padding: 10px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    /* Here, rules for anything less than Ipads width, with the
+       advice to design for the smallest common width, 320px.
+       This is the majority of smarthphones. */
+       .panel, .box {
+        border-radius: 10px;
+        padding: 5px;
+    }
+}
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    /* This is for any screen less than Ipad's width and at least
+       480px. This covers a many large-screened smartphones. It
+       is declared after the above rule so it overrides the rules
+       meant for 320px. */
+   .panel, .box {
+        border-radius: 10px;
+        padding: 10px;
+    }
+}
+
+
+ /**
+   * The CSS shown here will not be introduced in the Quickstart guide, but shows
+   * how you can use CSS to style your Element's container.
+   */
+  .StripeElement {
+    background-color: white;
+    height: 40px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+
+/* ======= Dropdown ======= */
+.item-more .dropdown-toggle {
+  cursor: pointer;
+}
+.item-more .dropdown-menu-custom {
+  border: 1px solid #e6e6e6;
+  border-radius: 0;
+  background-clip: padding-box;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  cursor: default;
+}
+.item-more .dropdown-menu-custom > li {
+  margin-bottom: 0;
+  font-size: 13px;
+}
+.item-more .dropdown-menu-custom > li > a {
+  padding: 10px 15px;
+  color: #494d55;
+}
+.item-more .dropdown-menu-custom > li > a:hover {
+  background: #f9f9fb;
+}
+.item-more .dropdown-menu-custom > li > a .icon {
+  vertical-align: middle;
+  font-size: 20px;
+  display: inline-block;
+  margin-right: 5px;
+}
+.item-more .dropdown-menu-custom .dropdown-footer {
+  background: #f9f9fb;
+  color: #616670;
+  padding: 15px;
+  text-align: center;
+}
+.item-more .dropdown-menu-custom .dropdown-footer a {
+  color: #616670;
+}
+.item-more .dropdown-menu-custom .dropdown-footer a:hover {
+  color: #494d55;
+}
+.item-more .dropdown-toggle {
+  padding-bottom: 10px;
+}
+.item-more .dropdown-menu-custom {
+  left: auto;
+  right: -66px;
+  width: 302px;
+  padding: 0;
+}
+.item-more .dropdown-menu-custom .title {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding: 15px;
+  font-size: 14px;
+  color: #616670;
+  background: #f9f9fb;
+  border-bottom: 1px solid #f3f3f7;
+  text-align: center;
+}
+.item-more .dropdown-menu-custom .arrow {
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #e6e6e6;
+  position: absolute;
+  right: 13px;
+  top: -8px;
+}
+.item-more .dropdown-menu-custom .arrow:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #f9f9fb;
+  position: absolute;
+  right: -8px;
+  top: 1px;
+}
+.item-more .dropdown-menu-custom .more-list {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.item-more .dropdown-menu-custom .more-list > li {
+  text-align: center;
+  margin-bottom: 0;
+  display: inline;
+  font-size: 12px;
+}
+.item-more .dropdown-menu-custom .more-list > li > a {
+  color: #616670;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  padding-top: 18px;
+  float: left;
+  overflow: hidden;
+  margin: 0;
+}
+.item-more .dropdown-menu-custom .more-list > li > a:hover {
+  color: #008FC4;
+  text-decoration: none;
+}
+.item-more .dropdown-menu-custom .more-list > li > a:hover {
+  color: #6dbd63;
+}
+.item-more .dropdown-menu-custom .more-list > li > a:hover {
+  color: #497cb1;
+}
+.item-more .dropdown-menu-custom .more-list > li > a:hover {
+  color: #ec6952;
+}
+.item-more .dropdown-menu-custom .more-list > li > a:hover .icon {
+  color: #008FC4;
+}
+.item-more .dropdown-menu-custom .more-list > li > a:hover .icon {
+  color: #6dbd63;
+}
+.item-more .dropdown-menu-custom .more-list > li > a:hover .icon {
+  color: #497cb1;
+}
+.item-more .dropdown-menu-custom .more-list > li > a:hover .icon {
+  color: #ec6952;
+}
+.item-more .dropdown-menu-custom .more-list > li > a .icon {
+  vertical-align: inherit;
+  font-size: 38px;
+  display: inline-block;
+  margin-right: 0;
+}
+
+.mat-card-content{
+    font-size:14px
+}
+.mat-card{
+    background:#fff;
+    color:rgba(0,0,0,.87)
+}
+}
+body .mat-card{
+    padding:0;
+    margin:.33333333rem;
+    border-radius:2px;
+    -webkit-box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);
+    box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);
+    color:rgba(0,0,0,.87)
+}
+body .mat-card>:first-child{
+    border-radius:2px 2px 0 0
+}
+body .mat-card>:last-child{
+    border-radius:0 0 2px 2px
+}
+.mat-card .overlay, .overlay-wrapper .overlay {
+    z-index: 50;
+    background: rgba(255,255,255,0.7);
+    border-radius: 3px;
+}
+.mat-card > .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.mat-card .overlay > .fas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -15px;
+  margin-top: -15px;
+  color: #000;
+  font-size: 30px;
+}
+body .mat-card .mat-card-content{
+    padding:1rem;
+    margin-bottom:0;
+    /*position:relative*/
+}
+body .mat-card.mat-card{
+    padding:0
+}
+.mat-indigo{
+    background-color:#3f51b5!important;
+    color:#fff!important
+}
+.sidebar-menu .fas{
+  width: 20px;
+}
+
+    .main-header .sidebar-toggle:before {
+            font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f0c9";
+
+    }
+      .modal { overflow: auto !important; }
+
+
+
+
+  /* Calculator
+============================================= */
+
+.calc {
+  width: 300px;
+  padding: 4px;
+  color: #333
+}
+
+div.is-calculator,
+span.is-calculator {
+  position: relative
+}
+
+button.calculator-trigger {
+  width: 25px;
+  padding: 0
+}
+
+img.calculator-trigger {
+  margin: 2px;
+  vertical-align: middle
+}
+
+.calculator-keyentry {
+  position: absolute;
+  top: 0;
+  right: 3px;
+  width: 0;
+  border: none;
+  background: 0 0
+}
+
+.calculator-inline {
+  position: relative;
+  border: 1px solid #3f769c;
+  background-color: #34607e;
+  padding: 5.7px 20px;
+}
+
+.calculator-inline .calculator-close {
+  display: none
+}
+
+.calculator-rtl {
+  direction: rtl
+}
+
+.calculator-prompt {
+  clear: both;
+  text-align: center
+}
+
+.calculator-prompt.ui-widget-header {
+  margin: 2px
+}
+
+.calculator-result {
+  clear: both;
+  margin: 0;
+  padding: 2px;
+  text-align: right;
+  background-color: #335b79;
+  border: 2px solid #2b4e68;
+  margin-bottom: 10px;
+  font-size: 110%;
+  overflow: hidden;
+  color: #fff;
+}
+
+.calculator-result span {
+  display: inline-block;
+  width: 100%
+}
+
+.calculator-result .calculator-formula {
+  font-size: 60%
+}
+
+.calculator-focussed {
+  /*background-color: #ffc*/
+}
+
+.calculator-row {
+  clear: both;
+  width: 100%
+}
+
+.calculator-space {
+  float: left;
+  margin: 2px;
+  width: 28px
+}
+
+.calculator-half-space {
+  float: left;
+  margin: 1px;
+  width: 14px
+}
+
+.calculator-row button {
+  position: relative;
+  float: left;
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  width: 20%;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  background: #FFF;
+  border: 1px solid #CCC;
+  margin: 5px;
+  color: #34607e;
+  font-size: 22px;
+  font-weight: bolder;
+  box-shadow: 2px 2px;
+}
+
+.calculator-inline .calculator-add,
+.calculator-inline .calculator-clear,
+.calculator-inline .calculator-divide,
+.calculator-inline .calculator-multiply,
+.calculator-inline .calculator-percent,
+.calculator-inline .calculator-plus-minus,
+.calculator-inline .calculator-subtract,
+.calculator-inline .calculator-undo {
+  background: #ff5c59;
+  color: white;
+}
+
+.calculator-inline .calculator-add,
+.calculator-inline .calculator-divide,
+.calculator-inline .calculator-multiply,
+/*.calculator-inline .calculator-percent,*/
+/*.calculator-inline .calculator-plus-minus,*/
+.calculator-inline .calculator-subtract{
+  background: #fc6e00;
+  color: white;
+}
+
+
+.calculator-inline .calculator-add,
+.calculator-inline .calculator-subtract{
+  background: #fc6e00;
+  font-size: 24px;
+  color: white;
+}
+
+
+.calculator-inline .calculator-subtract{
+  font-size: 30px;
+}
+
+
+.calculator-inline .calculator-equals {
+  background: #edff82;
+  font-size: 25px;
+
+}
+.panel, .box {
+  margin-top: 10px;
+}
+@-moz-document url-prefix() {
+  .calculator-base, // Firefox .calculator-trig{text-indent:-3px}}.calculator-keystroke{display:none;width:16px;height:14px;position:absolute;left:-1px;top:-1px;color:#000;background-color:#fff;border:1px solid #CCC;font-size:80%}.calculator-angle .calculator-keystroke,.calculator-base .calculator-keystroke,.calculator-trig .calculator-keystroke{top:-2px;font-size:95%}.calculator-keyname{width:22px;font-size:70%}
+
+
+.patt-holder{
+    background: transparent !important;
+}
+#patternHolder .patt-wrap {
+  z-index: 10;
+}
+#patternHolder .patt-circ.hovered {
+  background-color: #cde2f2;
+  border: none;
+}
+#patternHolder .patt-circ.hovered .patt-dots {
+  display: none;
+}
+#patternHolder .patt-circ.dir {
+  background-image: url('../../img/icon-arrow.png');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#patternHolder .patt-circ.e {
+  -webkit-transform: rotate(0);
+  transform: rotate(0);
+}
+#patternHolder .patt-circ.s-e {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+#patternHolder .patt-circ.s {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+#patternHolder .patt-circ.s-w {
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+#patternHolder .patt-circ.w {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+#patternHolder .patt-circ.n-w {
+  -webkit-transform: rotate(225deg);
+   transform: rotate(225deg);
+}
+#patternHolder .patt-circ.n {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+#patternHolder .patt-circ.n-e {
+  -webkit-transform: rotate(315deg);
+  transform: rotate(315deg);
+}
+
+
+.bottom10 {
+  margin-bottom: 10px;
+}
+
+
+.content-scroll { width: 450px; color: #333; padding: 0; }
+.top-menu-scroll { position: relative; overflow: auto; max-height: 400px; height: auto; background: #FFF; padding: 0; }
+.oe { list-style: none;padding-left:0 }
+.oe li { border-bottom: 1px solid #ddd; padding: 10px; color: #333; }
+.oe li:nth-child(even) { background-color: #f5f5f5;}
+.oe li:last-child { border-bottom: 0; }
+.oe li ul, .oe li ol { margin-left: 15px; }
+.oe li ul li, .oe li ol li { border-bottom: none; padding: 3px; }
+.oe li ul li:nth-child(even), .oe li ol li:nth-child(even) { background-color: transparent; }
+.content-scroll .dropdown-header {
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #ddd;
+    color: #8090a0;
+}
+.content-scroll .dropdown-header a, .content-scroll .dropdown-footer a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.content-scroll .dropdown-footer {
+    background-color: #F5F5F5;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+.content-scroll .dropdown-content {
+    display: block;
+    padding: 0;
+}
