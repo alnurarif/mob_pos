@@ -48,7 +48,13 @@
                 </a>
               </li>
               <?php endif;?>
-
+                <li style="background-color: #a06a6a">
+                  <a  class="pos-buttons pos-tip" href="<?php echo site_url('panel/settings/activate')?>">
+                      <i class="fa fa-th-large"></i>
+                      <span>POS</span>
+                      
+                  </a>
+                </li>
             <?php 
                 $stores = $user->stores ? ($user->stores) : array();
                 $all_stores = array();
