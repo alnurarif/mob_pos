@@ -49,7 +49,7 @@
               </li>
               <?php endif;?>
                 <li style="background-color: #a06a6a">
-                  <a  class="pos-buttons pos-tip" href="<?php echo site_url('panel/settings/activate')?>">
+                  <a  class="pos-buttons pos-tip" href="<?php echo site_url('panel/pos')?>">
                       <i class="fa fa-th-large"></i>
                       <span>POS</span>
                       
