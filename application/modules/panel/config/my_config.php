@@ -36,10 +36,24 @@ $config['my_config'] = array(
 			'icon'		=> 'fas fa-home',
 
 		),
-		'repair' => array(
-			'name'		=> 'repair/index',
-			'url'		=> 'repair/index/default',
+		'sales' => array(
+			'name' => 'sales',
+			'url' => 'reports/sales',
 			'icon'		=> 'glyphicon glyphicon-wrench',
+			'children'  => array(
+				'Repair' => array(
+					'name'		=> 'repair/index',
+					'url'		=> 'repair/index/default',
+				),
+				'Sales Report'  	=> array(
+					'name' => 'sales',
+					'url' => 'reports/sales_wf',
+				),
+				'View Refunds' 		=> array(
+					'name' => 'sales/return_sales',
+					'url' => 'sales/return_sales',
+				),
+			)
 		),
 
 		'customers' => array(
@@ -47,13 +61,6 @@ $config['my_config'] = array(
 			'url'		=> 'customers/index/enabled',
 			'icon'		=> 'fas fa-users',
 		),
-
-		'pos' => array(
-			'name'		=> 'pos/index',
-			'url'		=> 'pos',
-			'icon'		=> 'fas fa-desktop',
-		),
-
 		'inventory,phones,accessory,other,plans' => array(
 			'name'		=> 'Stock/Inventory',
 			'url'		=> 'inventory',
