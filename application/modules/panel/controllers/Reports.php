@@ -103,6 +103,17 @@ class Reports extends Auth_Controller {
 
         $this->render('reports/sales');
     }
+
+    /**
+     * this show the sales report without filter option
+     */
+    public function sales_wf()
+    {
+        $this->repairer->checkPermissions();
+        $this->data['users'] = $this->db->where('active', 1)->where('hidden', 0)->get('users')->result();
+
+        $this->render('reports/sales_wf');
+    }
     
    
     function getAllSales($pdf = NULL, $xls = NULL)
