@@ -2,6 +2,14 @@
 		<?php $this->load->view($this->theme . '_partials/navigation'); ?>
 
 	<?php // Left side column. contains the logo and sidebar ?>
+	<?php
+	$this->load->library('uri');
+
+	// Get the URI segment at index 3 (assuming it's the fourth segment)
+	$panel_segment = $this->uri->segment(1);
+	$pos_segment = $this->uri->segment(2);
+	?>
+	<?php if($panel_segment != 'panel' || $pos_segment != 'pos'){?>
 	<aside class="main-sidebar">
 		<section class="sidebar">
 			  <div class="user-panel">
@@ -17,9 +25,9 @@
 			<?php $this->load->view($this->theme . '_partials/sidemenu'); ?>
 		</section>
 	</aside>
-
+	<?php } ?>
 	<?php // Right side column. Contains the navbar and content of the page ?>
-	<div class="content-wrapper" id="content-wrapper">
+	<div class="content-wrapper" id="content-wrapper" <?php if($panel_segment == 'panel' && $pos_segment == 'pos'){ echo 'style="margin:0px; margin-left:0px !important;"'; }?>>
 		<?php if($show_page_title): ?>
 			<section class="content-header">
 				<h1><?php echo $page_title; ?></h1>
