@@ -11,10 +11,19 @@
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
+      <?php
+      $this->load->library('uri');
+
+      // Get the URI segment at index 3 (assuming it's the fourth segment)
+      $segment_one = $this->uri->segment(1);
+      $segment_two = $this->uri->segment(2);
+      ?>
+      <?php if($segment_one != 'panel' || $segment_two != 'pos'){?>
       <a href="#" class="sidebar-toggle" id="sidebar_toggle" data-toggle="push-menu"  role="button">
       <!-- <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"> -->
         <span class="sr-only"><?php echo lang('toggle_navigation');?></span>
       </a>
+      <?php } ?>
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
@@ -48,6 +57,13 @@
                 </a>
               </li>
               <?php endif;?>
+                <li style="background-color: #a06a6a">
+                  <a  class="pos-buttons pos-tip" href="<?php echo site_url('panel')?>">
+                      <i class="fas fa-home"></i>
+                      <span>Home</span>
+                      
+                  </a>
+                </li>
                 <li style="background-color: #a06a6a">
                   <a  class="pos-buttons pos-tip" href="<?php echo site_url('panel/pos')?>">
                       <i class="fa fa-th-large"></i>
