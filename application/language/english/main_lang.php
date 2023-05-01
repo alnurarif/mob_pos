@@ -1211,6 +1211,7 @@ $lang['Return Purchases (RMA)'] = 'Return Purchases (RMA)';
 $lang['Customer Purchases'] = 'Customer Purchases';
 $lang['Suppliers'] = 'Suppliers';
 $lang['Tax Rates'] = 'Tax Rates';
+$lang['hourly_rate'] = 'Hourly Rate';
 $lang['Manufacturers'] = 'Manufacturers';
 $lang['Carriers'] = 'Carriers';
 $lang['Users'] = 'Users';
