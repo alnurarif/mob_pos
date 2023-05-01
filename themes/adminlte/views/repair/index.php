@@ -198,8 +198,9 @@
         id = $(this).parent('.repair_link').attr('id');
         id  = id.split('__');
         id = id[0];
-        $('#myModalLG').modal({remote: site.base_url + 'panel/repair/view/' + id});
-        $('#myModalLG').modal('show');
+
+        toastr['success']("<?php echo $this->lang->line('repair_is_printing');?>");
+        var thePopup = window.open( site.base_url + "panel/repair/invoice/" + encodeURI(id) + "/" + 1, '_blank', "width=890, height=700");
     });
 
 
