@@ -50,7 +50,18 @@ class Repair extends Auth_Controller
             $this->datatables->where('assigned_to', $this->mUser->id);
         }
         $this->datatables
-            ->select('disable, repair.id as id, repair.serial_number as serial_number, repair.name as name, repair.telephone as telephone, repair.defect as defect, repair.model_name as model_name, repair.date_opening as date_opening, if(status > 0, CONCAT(status.label, "____", status.bg_color, "____", status.fg_color, "____", status.id, "____" ,repair.id), "cancelled") as status, CONCAT(users.first_name, " ", users.last_name) as assigned_to, repair.code as rid, grand_total, CONCAT(repair.warranty,"____",IFNULL(date_closing, 0)) as warranty, CONCAT(deposit_collected, "___", advance) as c1, pos_sold as c2, (SELECT sale_items.sale_id from sale_items WHERE sale_items.product_id=repair.id and item_type="drepairs") as sale_id')
+            ->select('repair.date_opening as date_opening, 
+            repair.code as rid, 
+            repair.name as name, 
+            repair.telephone as telephone,
+            repair.model_name as model_name,
+            repair.defect as defect,
+            grand_total,
+            advance,
+            (grand_total-advance) as balance,
+            if(status > 0, CONCAT(status.label, "____", status.bg_color, "____", status.fg_color, "____", status.id, "____" ,repair.id), "cancelled") as status,
+            if((grand_total-advance) > 0, "Due", "Paid") as payment_status,
+            disable, repair.id as id, repair.serial_number as serial_number,  CONCAT(users.first_name, " ", users.last_name) as assigned_to, CONCAT(repair.warranty,"____",IFNULL(date_closing, 0)) as warranty, CONCAT(deposit_collected, "___", advance) as c1, pos_sold as c2, (SELECT sale_items.sale_id from sale_items WHERE sale_items.product_id=repair.id and item_type="drepairs") as sale_id')
             ->join('status', 'status.id=repair.status', 'left')
             ->join('users', 'users.id=repair.assigned_to', 'left')
             ->from('repair');

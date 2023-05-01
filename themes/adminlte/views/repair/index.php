@@ -132,7 +132,7 @@
 })
     $(document).ready(function () {
         var oTable = $('#dynamic-table').dataTable({
-            "aaSorting": [[5, "desc"]],
+            "aaSorting": [[4, "desc"]],
             "aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
             "iDisplayLength": <?=$settings->rows_per_page;?>,
             'bProcessing': true, 'bServerSide': true,
@@ -146,9 +146,9 @@
             },
             'fnRowCallback': function (nRow, aData, iDisplayIndex) {
                 var oSettings = oTable.fnSettings();
-                nRow.id = aData[12];
-                pos_paid = aData[14];
-
+                nRow.id = aData[15];
+                pos_paid = aData[17];
+                console.log(aData);
                 var classes = "repair_link";
                 if (parseInt(pos_paid) == 1) {
                     classes += " success";
@@ -174,21 +174,17 @@
                 text: '<?= lang('export_to_pdf');?>',
             }],
             "aoColumns": [
-                {
-                    "bSortable": false,
-                    "mRender": checkbox
-                },
+                {"mRender": fld},
                 null,
                 null,
                 {"mRender": tp},
                 null,
                 null,
-                {"mRender": fld},
+                {mRender: currencyFormat},
+                {mRender: currencyFormat},
+                {mRender: currencyFormat},
                 {"mRender": status},
                 null,
-                null,
-                {mRender: currencyFormat},
-                {"mRender": warranty},
                 {"mRender": actions},
             ],
             "createdRow": function( row, data, dataIndex){
@@ -267,21 +263,20 @@
             <table class="compact table table-bordered table-striped" id="dynamic-table" width="100%">
                 <thead>
                     <tr>
-                        <th style="min-width:30px; width: 30px; text-align: center;">
-                        <input class="checkbox checkth" type="checkbox" name="check"/>
-                    </th>
-                        <th><?php echo lang('Serial Number'); ?></th>
-                        <th><?php echo lang('repair_name'); ?></th>
-                        <th><?php echo lang('client_telephone'); ?></th>
-                        <th><?php echo lang('repair_defect'); ?></th>
-                        <th><?php echo lang('repair_model'); ?></th>
-                        <th><?php echo lang('repair_opened_at'); ?></th>
-                        <th><?php echo lang('repair_status'); ?></th>
-                        <th><?php echo lang('assigned_to'); ?></th>
+                        
+                        <th><?php echo lang('Date'); ?></th>
                         <th><?php echo lang('repair_code'); ?></th>
+                        <th><?php echo lang('Customer'); ?></th>
+                        <th><?php echo lang('client_telephone'); ?></th>
+                        <th><?php echo lang('repair_model'); ?></th>
+                        <th><?php echo lang('repair_defect'); ?></th>
                         <th><?php echo lang('grand_total'); ?></th>
-                        <th><?php echo lang('warranty'); ?></th>
+                        <th><?php echo lang('Paid'); ?></th>
+                        <th><?php echo lang('balance'); ?></th>
+                        <th><?php echo lang('repair_status'); ?></th>
+                        <th><?php echo lang('payment_status'); ?></th>
                         <th><?php echo lang('actions'); ?></th>
+                        
 
                         <!-- <th><?php echo lang('repair_name'); ?></th>
                         <th><?php echo lang('client_telephone'); ?></th>
