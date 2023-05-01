@@ -226,6 +226,20 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="clock_in_out_success_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo lang('clock_in_out');?></h4>
+            </div>
+            <div class="modal-body">
+                <p>You're successfully clock <span id="clock_in_or_out"></span>!</p>
+            </div>
+            
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     jQuery(document).on("click", "#clock_in_out_form", function (event) {
         event.preventDefault();
@@ -283,14 +297,25 @@
                                             if (active_user_pin == selected_pin) {
                                                 if (data == 'clock_in') {
                                                     $('#clocked_status').html("<?php echo lang('clocked_in');?>");
+                                                    
                                                 }else if (data == 'clock_out') {
                                                     $('#clocked_status').html("<?php echo lang('clocked_out');?>");
+                                                    
+
                                                 }
+                                            }
+                                            if (data == 'clock_in') {
+                                              $('#clock_in_or_out').text('in');
+                                            }else if (data == 'clock_out') {
+                                              $('#clock_in_or_out').text('out');
                                             }
                                             $('#entry_pin_code').val('');
                                             $('#clock_in_out_form_modal').modal('hide');
                                             toastr.success("<?php echo lang('time_logged');?>");
-                                            window.location.reload();
+                                            $('#clock_in_out_success_modal').modal('show');
+                                            setTimeout(function(){
+                                              window.location.reload();
+                                            }, 3000);
                                         }
                                     }
                                 });
