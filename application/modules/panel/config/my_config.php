@@ -51,7 +51,7 @@ $config['my_config'] = array(
 				),
 				'View Refunds' 		=> array(
 					'name' => 'sales/return_sales',
-					'url' => 'sales/return_sales',
+					'url' => 'sales/return_sales_wf',
 				),
 			)
 		),

@@ -12,6 +12,14 @@ class Sales extends Auth_Controller {
         $this->repairer->checkPermissions();
         $this->render('sales/return_sales');
     }
+    /**
+     * it will show the return sales without filter
+     */
+    public function return_sales_wf()
+    {
+        $this->repairer->checkPermissions();
+        $this->render('sales/return_sales_wf');
+    }
     function getReturns($pdf = NULL, $xls = NULL)
     {
          if ($this->input->get('start_date')) {
