@@ -356,10 +356,11 @@ function fsd(oObj) {
 
     function status(x) {
         if (x == 'cancelled') {
-            return '<div class="text-center"><span class="row_status label" style="background-color:#000;">Cancelled</span></div>';
+            return '<div class="text-center"><span class="row_status label" style="cursor:pointer; background-color:#000;" data-rep-id="'+x[4]+'">Cancelled</span></div>';
         }
+
         x = x.split('____');
-        return '<div class="text-center"><span class="row_status label" style="background-color:'+x[1]+'; color:'+x[2]+';">'+x[0]+'</span></div>';
+        return '<div class="text-center"><span class="row_status label" style="cursor:pointer; background-color:'+x[1]+'; color:'+x[2]+';" data-rep-id="'+x[4]+'">'+x[0]+'</span></div>';
     }
     function tp(x) {
         return x.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
