@@ -295,8 +295,16 @@ class Repair extends Auth_Controller
                 $sign_name = $this->input->post('sign_name');
                 $this->db->update('repair', array('repair_sign' => $name, 'repair_sign_name' => $sign_name));
             }
-
+            $repair_new = $this->getRepairByID($result['id']);
             if ($result) {
+                $data = array(
+                    'repair_id' => $repair_new['id'],
+                    'repair_status' => $repair_new['status'],
+                    'repair_note' => $repair_new['comment'],
+                    'created_by' => $user_id,
+                    'created_at' => date('Y-m-d H:i:s'),
+                );
+                $this->db->insert('repair_history', $data);
               $emails = $this->settings_model->getUsersByID($this->mSettings->notify_repair);
               if ($emails) {
                 $user = $this->ion_auth->user()->row();
@@ -496,6 +504,15 @@ class Repair extends Auth_Controller
 
 
             $this->repair_model->edit_repair($id, $data, $products);
+
+            $data = array(
+                'repair_id' => $id,
+                'repair_status' => $data['status'],
+                'repair_note' => $data['comment'],
+                'created_by' => $data['updated_by'],
+                'created_at' => date('Y-m-d H:i:s'),
+            );
+            $this->db->insert('repair_history', $data);
         }else{
             $this->repairer->send_json(['success'=>false, 'error'=>validation_errors()]);
         }
@@ -570,6 +587,31 @@ class Repair extends Auth_Controller
         }
         
     }
+    public function update_status(){
+
+        $repair_note = $this->input->post('repair_note', true);
+        $user_id = $this->input->post('uid', true);
+        $status = $this->input->post('status', true);
+        $id = $this->input->post('repair_id_edit', true);
+
+        $data = array(
+            'status' => $status,
+        );
+        if($this->db->where('id', $id)->update('repair',$data)){
+            $data = array(
+                'repair_id' => $id,
+                'repair_status' => $status,
+                'repair_note' => $repair_note,
+                'created_by' => $user_id,
+                'created_at' => date('Y-m-d H:i:s'),
+            );
+            $this->db->insert('repair_history', $data);
+            echo json_encode(array('success' => true));
+        }else{
+            echo json_encode(array('success' => false));
+        }
+        
+    }
 
     public function view($id)
     {
@@ -579,6 +621,34 @@ class Repair extends Auth_Controller
 
 
         $this->load->view($this->theme.'repair/view', $this->data);
+    }
+
+    public function status_history($id){
+        $repair_history_data = $this->db->select('repair_history.*, status.id as status_id, status.label as status_name, CONCAT(users.first_name, " " , users.last_name) as created_by_name')
+        ->from('repair_history')
+        ->join('status', 'repair_history.repair_status = status.id', 'left')
+        ->join('users', 'repair_history.created_by = users.id', 'left')
+        ->where('repair_id', $id)
+        ->get()
+        ->result();
+        $this->data['repair'] = $this->getRepairByID($id);
+        $this->data['repair_history_data'] = $repair_history_data;
+        $this->load->view($this->theme.'repair/repair_history', $this->data);
+    }
+
+    public function view_payments($id){
+        
+    }
+
+    public function view_status($id)
+    {
+        $this->data['settings'] = $this->mSettings;
+        $this->data['repair'] = $this->getRepairByID($id);
+        $this->data['statuses'] = $this->settings_model->getRepairStatuses();
+        // $this->data['repair']['invoice'] = $this->repair_model->getRepairPosInvoice($id);
+
+
+        $this->load->view($this->theme.'repair/repair_status', $this->data);
     }
 
 

@@ -70,6 +70,11 @@
 
         var view = "<li><a class='view' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/view/"+pqc[0]+"'><i class='fas fa-check'></i> <?php echo lang('view_repair');?></a></li>";
         
+        var repair_history_button = "<li><a class='repair_history_button' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/status_history/"+pqc[0]+"'><i class='fas fa-history'></i> <?php echo lang('Repair History');?></a></li>";
+        
+        var view_payments_button = "<li><a class='view_payments_button' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/view_payments/"+pqc[0]+"'><i class='fa fa-credit-card'></i> <?php echo lang('add_payment');?></a></li>";
+        
+        var add_payment_button = "<li><a class='add_payment_button' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/add_payment/"+pqc[0]+"'><i class='fa fa-credit-card'></i> <?php echo lang('view_payments');?></a></li>";
        
         // var edit = "<li><a href=<?php echo base_url();?>panel/repair/edit/"+pqc[0]+"><i class='fas fa-edit'></i> <?php echo lang('edit_repair');?></a></li>";
 
@@ -104,6 +109,9 @@
             return_var += "<li><a data-toggle=\"modal\" data-target=\"#myModal\"  href='<?php echo base_url();?>panel/sales/modal_view/"+pqc[3]+"'><i class='fas fa-check'></i> <?php echo lang('view_sale');?></a></li>";
         }
         return_var += view;
+        return_var += repair_history_button;
+        return_var += view_payments_button;
+        return_var += add_payment_button;
         // return_var += view_payments;
         // return_var += add_payment;
 
@@ -148,7 +156,6 @@
                 var oSettings = oTable.fnSettings();
                 nRow.id = aData[15];
                 pos_paid = aData[17];
-                console.log(aData);
                 var classes = "repair_link";
                 if (parseInt(pos_paid) == 1) {
                     classes += " success";
@@ -203,6 +210,12 @@
         var thePopup = window.open( site.base_url + "panel/repair/invoice/" + encodeURI(id) + "/" + 1, '_blank', "width=890, height=700");
     });
 
+    $('body').on('click', '.row_status', function(){
+        let rep_id = $(this).attr('data-rep-id');
+        $('#myModal').modal({remote: site.base_url + 'panel/repair/view_status/' + rep_id});
+        $('#myModal').modal('show');
+        return false;
+    });
 
     jQuery(document).on("click", "#print_repair", function() {
         var num = jQuery(this).data("num");
