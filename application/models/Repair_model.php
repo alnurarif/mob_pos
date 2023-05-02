@@ -286,7 +286,8 @@ class Repair_model extends CI_Model
         $this->db->where('repair.id', $id);
         $this->db->join('manufacturers', 'manufacturers.id=repair.manufacturer_id', 'left');
         $this->db->join('users', 'users.id=repair.assigned_to', 'left');
-        $this->db->select('repair.*, manufacturers.name as manufacturer_name, repair.id as id, CONCAT(users.first_name, " ", users.first_name) as assigned_to_name');
+        $this->db->join('status', 'status.id=repair.status', 'left');
+        $this->db->select('repair.*,status.id as status_id, status.label as status_label, manufacturers.name as manufacturer_name, repair.id as id, CONCAT(users.first_name, " ", users.last_name) as assigned_to_name');
         $q = $this->db->get('repair');
 
         $data = array();
