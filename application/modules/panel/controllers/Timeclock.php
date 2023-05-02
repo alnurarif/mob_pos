@@ -25,16 +25,25 @@ class Timeclock extends Auth_Controller
     {
         $pin_code = $this->input->post('entry_pin_code');
         $row = $this->db->get_where('users', array('pin_code' => $pin_code));
+        $data = [];
         if ($row->num_rows() > 0) {
             $user = $row->row();
             $get_record = $this->db->get_where('timeclock', array('user_id' => $user->id, 'clock_out'=>NULL, 'store_id'=> $this->activeStore));
             if ($get_record->num_rows() > 0) {
-                echo 'clock_out';
+                $data ['state'] = 'clock_out';
+                $data['user'] = $user;
+
+                echo json_encode($data);
             }else{
-                echo 'clock_in';
+                $data ['state'] = 'clock_in';
+                $data['user'] = $user;
+
+                echo json_encode($data);
             }
         }else{
-            echo "pin_incorrect";
+            $data ['state'] = 'pin_incorrect';
+
+            echo json_encode($data);
         }
            
     }

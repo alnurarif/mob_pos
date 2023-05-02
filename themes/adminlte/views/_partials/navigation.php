@@ -234,6 +234,10 @@
                 <h4 class="modal-title"><?php echo lang('clock_in_out');?></h4>
             </div>
             <div class="modal-body">
+                <p><strong>Name:</strong></p>
+                <p id="clock_in_out_name"></p>
+                <p><strong>Company:</strong></p>
+                <p id="clock_in_out_company"></p>
                 <p>You're successfully clock <span id="clock_in_or_out"></span>!</p>
             </div>
             
@@ -257,12 +261,15 @@
             cache: false,
             dataType: "html",
             success: function (data) {
+                data = JSON.parse(data);
+                $('#clock_in_out_name').text(`${data.user.first_name} ${data.user.last_name}`);
+                $('#clock_in_out_company').text(`${data.user.company}`);
                 var msg = null;
-                if (data == 'pin_incorrect') {
+                if (data.state == 'pin_incorrect') {
                     toastr.error("<?php echo lang('incorrect_pin');?>");
-                }else if (data == 'clock_in') {
+                }else if (data.state == 'clock_in') {
                     var msg = ("<?php echo lang('sure_clock_in');?>")
-                }else if (data == 'clock_out') {
+                }else if (data.state == 'clock_out') {
                     var msg = ("<?php echo lang('sure_clock_out');?>")
                 }
 
@@ -295,18 +302,18 @@
                                             var active_user_pin = <?php echo escapeStr($user->pin_code); ?>;
                                             var selected_pin = parseInt($('#entry_pin_code').val());
                                             if (active_user_pin == selected_pin) {
-                                                if (data == 'clock_in') {
+                                                if (data.state == 'clock_in') {
                                                     $('#clocked_status').html("<?php echo lang('clocked_in');?>");
                                                     
-                                                }else if (data == 'clock_out') {
+                                                }else if (data.state == 'clock_out') {
                                                     $('#clocked_status').html("<?php echo lang('clocked_out');?>");
                                                     
 
                                                 }
                                             }
-                                            if (data == 'clock_in') {
+                                            if (data.state == 'clock_in') {
                                               $('#clock_in_or_out').text('in');
-                                            }else if (data == 'clock_out') {
+                                            }else if (data.state == 'clock_out') {
                                               $('#clock_in_or_out').text('out');
                                             }
                                             $('#entry_pin_code').val('');
