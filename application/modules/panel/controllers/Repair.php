@@ -66,6 +66,12 @@ class Repair extends Auth_Controller
             ->join('users', 'users.id=repair.assigned_to', 'left')
             ->from('repair');
 
+            // ->join('sale_items', 'repair.id = sale_items.product_id', 'left')
+            // ->join('payments', 'repair.id = payments.repair_id', 'left')
+            // ->where_in('sale_items.item_type', array('crepairs', 'drepairs'))
+            // ->group_by('repair.id')
+// (SUM(sale_items.subtotal) + IFNULL(payments.amount,0)) AS total_paid,
+
         if ($type === 'disabled') {
             $this->datatables->where('disable', 1);
         }elseif($type === 'enabled') {
@@ -637,7 +643,31 @@ class Repair extends Auth_Controller
     }
 
     public function view_payments($id){
-        
+        $payments = $this->db->select('sale_items.*, sales.date as payment_date, repair.reference_no as repair_reference_no, payments.paid_by as payment_method')
+        ->from('sale_items')
+        ->join('sales', 'sale_items.sale_id = sales.id', 'left')
+        ->join('repair', 'sale_items.product_id = repair.id', 'left')
+        ->join('payments', 'sale_items.sale_id = payments.sale_id', 'left')
+        ->where('product_id', $id)
+        ->where_in('item_type', array('crepairs', 'drepairs'))
+        ->get()
+        ->result();
+        $this->data['repair'] = $this->getRepairByID($id);
+        $this->data['payments'] = $payments;
+        $this->load->view($this->theme.'repair/view_payments', $this->data);
+    }
+
+    public function add_payment_middle($id){
+        $payments_amount = $this->db->select('SUM(sale_items.subtotal) as total_paid')
+        ->from('sale_items')
+        ->where('product_id', $id)
+        ->where_in('item_type', array('crepairs', 'mrepairs', 'drepairs'))
+        ->get()
+        ->result();
+        $this->data['payments_amount'] = $payments_amount;
+        $this->data['settings'] = $this->mSettings;
+        $this->data['repair'] = $this->getRepairByID($id);
+        $this->load->view($this->theme.'repair/add_payment_middle',$this->data);
     }
 
     public function view_status($id)
@@ -989,6 +1019,70 @@ class Repair extends Auth_Controller
             $this->data['inv'] = $sale;
             $this->data['payment_ref'] = $this->repairer->getReference('pay');
             $this->load->view($this->theme.'/repair/add_payment', $this->data);
+        }
+    }
+
+    public function add_payment_from_repair($id = NULL)
+    {
+        $this->load->helper('security');
+        if ($this->input->get('id')) {
+            $id = $this->input->get('id');
+        }
+        if ($this->input->post('sale_id')) {
+            $id = $this->input->post('sale_id');
+        }
+
+        $sale = $this->repair_model->getTRepairByID($id);
+        if ($sale->payment_status == 'paid' && $sale->grand_total == $sale->paid) {
+            $this->session->set_flashdata('message', lang('sale_already_paid'));
+            $this->repairer->md();
+        }
+
+        $this->form_validation->set_rules('amount-paid', lang("amount"), 'required');
+        $this->form_validation->set_rules('paid_by', lang("paid_by"), 'required');
+        $this->form_validation->set_rules('userfile', lang("attachment"), 'xss_clean');
+        if ($this->form_validation->run() == TRUE) {
+            $date = date('Y-m-d H:i:s');
+            $payment = array(
+                'date'         => $date,
+                'repair_id'      => $this->input->post('sale_id'),
+                'reference_no' => $this->repairer->getReference('pay'),
+                'amount'       => $this->input->post('amount-paid'),
+                'paid_by'      => $this->input->post('paid_by'),
+                'cheque_no'    => $this->input->post('cheque_no'),
+                'cc_no'        => $this->input->post('paid_by') == 'voucher' ? $this->input->post('voucher_no') : $this->input->post('pcc_no'),
+                'cc_holder'    => $this->input->post('pcc_holder'),
+                'cc_month'     => $this->input->post('pcc_month'),
+                'cc_year'      => $this->input->post('pcc_year'),
+                'cc_type'      => $this->input->post('pcc_type'),
+                'cc_cvv2'      => $this->input->post('pcc_ccv'),
+                'note'         => $this->input->post('note'),
+                'created_by'   => $this->session->userdata('user_id'),
+                'type'         => 'received',
+            );
+
+           
+
+        } elseif ($this->input->post('add_payment')) {
+            $this->session->set_flashdata('error', validation_errors());
+            redirect($_SERVER["HTTP_REFERER"]);
+        }
+
+        if ($this->form_validation->run() == TRUE && $msg = $this->repair_model->addPayment($payment)) {
+            if ($msg) {
+                $this->session->set_flashdata('message', lang("payment_added"));
+                $success = true;
+            } else {
+                $this->session->set_flashdata('error', lang("payment_failed"));
+                $success = false;
+            }
+            redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            $this->data['error'] = (validation_errors() ? validation_errors() : $this->session->flashdata('error'));
+            $sale = $this->repair_model->getTRepairByID($id);
+            $this->data['inv'] = $sale;
+            $this->data['payment_ref'] = $this->repairer->getReference('pay');
+            $this->load->view($this->theme.'/repair/add_payment_from_repair', $this->data);
         }
     }
 

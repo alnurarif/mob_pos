@@ -72,10 +72,13 @@
         
         var repair_history_button = "<li><a class='repair_history_button' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/status_history/"+pqc[0]+"'><i class='fas fa-history'></i> <?php echo lang('Repair History');?></a></li>";
         
-        var view_payments_button = "<li><a class='view_payments_button' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/view_payments/"+pqc[0]+"'><i class='fa fa-credit-card'></i> <?php echo lang('add_payment');?></a></li>";
+        // var view_payments_button = "<li><a class='view_payments_button' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/view_payments/"+pqc[0]+"'><i class='fa fa-credit-card'></i> <?php echo lang('view_payments');?></a></li>";
         
-        var add_payment_button = "<li><a class='add_payment_button' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/add_payment/"+pqc[0]+"'><i class='fa fa-credit-card'></i> <?php echo lang('view_payments');?></a></li>";
+        var view_payments_button = '<li><a class="" data-toggle="modal" data-target="#myModal" href="<?php echo base_url();?>panel/repair/payments/'+pqc[0]+'"><i class="fas fa-money-bill-alt"></i> <?php echo lang('view_payments');?></a></li>';
+        // var add_payment_button = "<li><a class='add_payment_button' data-toggle=\"modal\" data-target=\"#myModalLG\"  href='<?php echo base_url();?>panel/repair/add_payment_middle/"+pqc[0]+"'><i class='fa fa-credit-card'></i> <?php echo lang('add_payment');?></a></li>";
        
+        var add_payment_button = '<li><a class="" data-toggle="modal" data-target="#myModal" href="<?php echo base_url();?>panel/repair/add_payment_from_repair/'+pqc[0]+'"><i class="fas fa-money-bill-alt"></i> <?php echo lang('add_payment');?></a></li>';
+
         // var edit = "<li><a href=<?php echo base_url();?>panel/repair/edit/"+pqc[0]+"><i class='fas fa-edit'></i> <?php echo lang('edit_repair');?></a></li>";
 
         var edit = "<li><a  data-dismiss='modal' id='modify_reparation' href='#repairmodal' data-toggle='modal' data-num='"+pqc[0]+"'><i class='fas fa-edit'></i> <?=lang('edit_repair');?></a></li>"; 
@@ -312,4 +315,8 @@
             <?php echo form_close() ?>
         </div>
     </div>
+</div>
+
+<div class="modal fade in" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel" aria-hidden="true">
+    
 </div>

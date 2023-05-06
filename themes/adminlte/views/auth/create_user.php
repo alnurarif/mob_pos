@@ -51,6 +51,10 @@
                             <input type="text" name="phone" value="" id="phone" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask="" <?php echo $frm_priv['phone'] ? 'required': '';?>>
                      </div>
                     <div class="form-group">
+                          <?php echo lang('hourly_rate', 'hourly_rate');?> <br />
+                          <input type="number" step="0.1" min="0.0" pattern="\d+(\.\d{1,2})?" name="hourly_rate" value="" id="hourly_rate" class="form-control">
+                    </div>
+                    <div class="form-group">
                             <?php echo lang('password', 'password');?> <br />
                             <?php echo form_input($password);?>
                       </div>
